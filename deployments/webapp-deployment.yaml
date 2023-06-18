@@ -15,6 +15,7 @@ spec:
       containers:
         - name: webapp-container
           image: ashfaqbarkati786/flask1:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
