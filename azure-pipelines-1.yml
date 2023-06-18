@@ -1,0 +1,63 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: default
+
+stages:
+- stage: Build
+  displayName: 'Build Docker image'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build and Push'
+    steps:
+    - checkout: self
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'docker'
+        repository: 'ashfaqbarkati786/flask1'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+        tags: 'latest'
+    - script: |
+               sudo docker push ashfaqbarkati786/flask1
+      displayName: 'Run Command on Self-Hosted Agent'
+    
+
+- stage: Deploy
+  displayName: 'Deploy Infrastructure'
+  dependsOn: Build
+  jobs:
+  - job: TerraformJob
+    displayName: 'Terraform Deployment'
+    steps:
+    - checkout: self
+
+    - task: CmdLine@2
+      displayName: 'Run Terraform'
+      inputs:
+        script: |
+          cd $(Build.SourcesDirectory)/terraformfiles  
+          terraform init    
+          terraform plan
+          terraform apply -auto-approve
+
+
+    
+    - script: |
+          az aks get-credentials --resource-group Final-Project --name aks --overwrite-existing
+      displayName: 'Get AKS Cluster Credentials'
+      
+    - script: |
+        kubectl get nodes
+      displayName: 'Verify AKS Cluster Connection'
+
+    - checkout: self
+      displayName: 'Checkout GitHub Repository'
+
+    - script: |
+        kubectl apply -f deployments/
+      displayName: 'Deploy to AKS Cluster'
