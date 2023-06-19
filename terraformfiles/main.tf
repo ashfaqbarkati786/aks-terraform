@@ -23,11 +23,3 @@ resource "azurerm_kubernetes_cluster" "aks" {
     Environment = "Production"
   }
 }
-resource "null_resource" "apply_manifests" {
-  depends_on = [azurerm_kubernetes_cluster.aks]
-
-  provisioner "local-exec" {
-    command     = "kubectl apply -f /home/ubuntu/ashfaq/aks-terraform/deployments/webapp-deployment.yaml"
-    working_dir = "/home/ubuntu/ashfaq/aks-terraform/deployments"
-  }
-}
