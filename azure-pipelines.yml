@@ -60,5 +60,5 @@ stages:
       displayName: 'Checkout GitHub Repository'
 
     - script: |
-        kubectl apply -f deployments/
+        kubectl apply -f deployments/webapp-deployment.yaml
       displayName: 'Deploy to AKS Cluster'
