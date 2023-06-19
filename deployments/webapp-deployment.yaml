@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: webapp-container
-          image: ashfaqbarkati786/flask1:$(Build.BuildId)
+          image: ashfaqbarkati786/flask1:${IMAGE_TAG}
           ports:
             - containerPort: 80
           env:
