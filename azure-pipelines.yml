@@ -60,6 +60,6 @@ stages:
       displayName: 'Checkout GitHub Repository'
 
     - script: |
-        envsubst '${TAG}' < deployments/webapp-deployment.yaml > deployments/webapp-deployment-modified.yaml
+        envsubst '$(Build.BuildId)' < deployments/webapp-deployment.yaml > deployments/webapp-deployment-modified.yaml
         kubectl apply -f deployments/webapp-deployment-modified.yaml
       displayName: 'Replace Environment Variables and Deploy to AKS Cluster'
