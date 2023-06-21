@@ -54,11 +54,10 @@ stages:
         kubectl get nodes
       displayName: 'Verify AKS Cluster Connection'
 
-    - checkout: self
-      displayName: 'Checkout GitHub Repository'
 
     - script: |
         export IMAGE_TAG=$(Build.BuildId)
         envsubst '${IMAGE_TAG}' < deployments/webapp-deployment.yaml > deployments/webapp-deployment-modified.yaml
         kubectl apply -f deployments/webapp-deployment-modified.yaml
+        kubectl apply -f deployments/
       displayName: 'Replace Environment Variables and Deploy to AKS Cluster'
