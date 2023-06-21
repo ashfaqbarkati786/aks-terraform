@@ -30,11 +30,13 @@ stages:
     steps:
     - checkout: self
 
-    - task: CmdLine@2
-      displayName: 'Run Terraform'
+    - task: AzureCLI@2
       inputs:
-        script: |
-          cd $(Build.SourcesDirectory)/terraformfiles  
+        azureSubscription: 'arm'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          cd $(Build.SourcesDirectory)/terraformfiles
           terraform init    
           terraform plan
           terraform apply -auto-approve
@@ -58,3 +60,7 @@ stages:
         kubectl apply -f deployments/db-deployment.yaml
         kubectl apply -f deployments/db-service.yaml
       displayName: 'Replace Environment Variables and Deploy to AKS Cluster'
+
+    
+
+
