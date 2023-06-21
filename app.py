@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://randomuser:r4nd0mP4ssw0rd@db-service:3306/sampledb'
 db = SQLAlchemy(app)
 
-# Define your Student model
+
 class Student(db.Model):
     __tablename__ = 'student'
     id = db.Column(db.Integer, primary_key=True)
