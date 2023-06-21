@@ -14,11 +14,6 @@ stages:
     displayName: 'Build and Push'
     steps:
     - checkout: self
-    
-    - script: |
-        docker logout
-        docker login -u "ashfaqbarkati786" -p "Ashfaq@123"
-      displayName: 'Login to Docker Hub'
 
     - script: |
         docker build -t ashfaqbarkati786/flask1:$(Build.BuildId) -f Dockerfile .
